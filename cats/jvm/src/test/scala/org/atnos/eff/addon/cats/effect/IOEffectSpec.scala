@@ -37,7 +37,7 @@ class IOEffectSpec(implicit ee: ExecutionEnv) extends Specification with ScalaCh
       b <- ioDelay(20)
     } yield a + b
 
-    action[S].runOption.unsafeRunTimed(5.seconds).flatten must beSome(30)
+    action[S]().runOption.unsafeRunTimed(5.seconds).flatten must beSome(30)
   }
 
   def e2 = {
@@ -46,7 +46,7 @@ class IOEffectSpec(implicit ee: ExecutionEnv) extends Specification with ScalaCh
       b <- ioDelay { boom; 20 }
     } yield a + b
 
-    action[S].ioAttempt.runOption.unsafeRunTimed(5.seconds).flatten must beSome(beLeft(boomException))
+    action[S]().ioAttempt.runOption.unsafeRunTimed(5.seconds).flatten must beSome(beLeft(boomException))
   }
 
   def e3 = {
@@ -65,7 +65,7 @@ class IOEffectSpec(implicit ee: ExecutionEnv) extends Specification with ScalaCh
       b <- ioDelay(20)
     } yield a + b
 
-    action[S].runOption.unsafeRunTimed(5.seconds).flatten must beSome(30)
+    action[S]().runOption.unsafeRunTimed(5.seconds).flatten must beSome(30)
   }
 
   def e5 = {

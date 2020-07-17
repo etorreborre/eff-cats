@@ -91,7 +91,7 @@ object t {
   import org.atnos.eff.Members.extractMember
 
   def foo[R :_effects](i: Int): Eff[R, Int] =
-    getFoo[R] >>
+    getFoo[R]() >>
     getBar[R] >>
     getBaz[R]
 

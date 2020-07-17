@@ -74,7 +74,7 @@ def program[R :_readerInt :_writerString :_eval]: Eff[R, Int] = for {
 
 // run the action with all the interpreters
 // each interpreter running one effect
-program[Stack].runReader(6).runWriter.runEval.run
+program[Stack]().runReader(6).runWriter.runEval.run
 }.eval}
 
 As you can see, all the effects of the `Stack` type are being executed one by one:

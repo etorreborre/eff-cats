@@ -56,7 +56,7 @@ class OptionEffectSpec extends Specification with ScalaCheck { def is = s2"""
       } yield i + j
 
     // run effects
-    readOption[S].runOption.runReader(init).run must_== Some(init + someValue)
+    readOption[S]().runOption.runReader(init).run must_== Some(init + someValue)
   }.setGens(posNum[Int], posNum[Int]).set(minTestsOk = 1)
 
 

@@ -53,7 +53,7 @@ class FutureEffectSpec(implicit ee: ExecutionEnv) extends Specification with Sca
       b <- futureDelay(20)
     } yield a + b
 
-    action[S].runOption.runSequential must beSome(30).await(retries = 5, timeout = 5.seconds)
+    action[S]().runOption.runSequential must beSome(30).await(retries = 5, timeout = 5.seconds)
   }
 
   def e2 = {
@@ -62,7 +62,7 @@ class FutureEffectSpec(implicit ee: ExecutionEnv) extends Specification with Sca
       b <- futureDelay { boom; 20 }
     } yield a + b
 
-    action[S].futureAttempt.runOption.runSequential must beSome(beLeft(boomException)).await(retries = 5, timeout = 5.seconds)
+    action[S]().futureAttempt.runOption.runSequential must beSome(beLeft(boomException)).await(retries = 5, timeout = 5.seconds)
   }
 
   def e3 = {
@@ -77,7 +77,7 @@ class FutureEffectSpec(implicit ee: ExecutionEnv) extends Specification with Sca
 
     val run = futureDelay[S, Unit](Thread.sleep(1000)) >> Eff.traverseA(delays)(action)
     eventually(retries = 5, sleep = 0.seconds) {
-      messages.clear
+      messages.clear()
       Await.result(run.runOption.runAsync, 4 seconds)
 
       "the messages are ordered" ==> {

@@ -35,7 +35,7 @@ class DoobieConnectionIOEffectSpec extends Specification with ThrownExpectations
 
     val (xa, c) = H2TestableTransactor.create[IO]()
 
-    p.runConnectionIO(xa).detach.unsafeRunSync must_== 10
+    p.runConnectionIO(xa).detach.unsafeRunSync() must_== 10
     c.calls must_== List("connection", "before", "after", "always")
   }
 
@@ -101,7 +101,7 @@ class DoobieConnectionIOEffectSpec extends Specification with ThrownExpectations
   
   implicit class RunConnectionOps[A](e: Eff[Stack, A]) {
     def runConnection(xa: Transactor[IO]): Throwable Either A =
-      e.runConnectionIO(xa).detach.attempt.unsafeRunSync
+      e.runConnectionIO(xa).detach.attempt.unsafeRunSync()
   }
 
   def queryTable(i: Int): ConnectionIO[Int] = sql"select $i".query[Int].unique

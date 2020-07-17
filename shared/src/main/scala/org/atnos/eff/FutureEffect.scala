@@ -16,7 +16,7 @@ object FutureCreation extends FutureCreation
 final case class TimedFuture[A](callback: (Scheduler, ExecutionContext) => Future[A], timeout: Option[FiniteDuration] = None) {
   @inline def runNow(scheduler: Scheduler, ec: ExecutionContext): Future[A] =
     timeout.fold(callback(scheduler, ec)) { t =>
-      val promise = Promise[A]
+      val promise = Promise[A]()
       val cancelTimeout = scheduler.schedule({ promise.tryFailure(new TimeoutException); () }, t)
       promise.completeWith(callback(scheduler, ec).map(a => { cancelTimeout(); a })(ec))
       promise.future

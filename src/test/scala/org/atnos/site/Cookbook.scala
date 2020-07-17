@@ -66,7 +66,7 @@ def incrementNTimes[R :_err :_log](start: Int, times: Int): Eff[R, Int] = for {
 
   // the call uses the stack R plus an additional StateInt effect which is interpreted right away.
   // The other effects remain
-  result <- repeatM(times, incrementCounter[Fx.prepend[StateInt, R]]).execState(start)
+  result <- repeatM(times, incrementCounter[Fx.prepend[StateInt, R]]()).execState(start)
 } yield result
 
 /**

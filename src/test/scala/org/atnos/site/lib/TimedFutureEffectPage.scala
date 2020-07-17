@@ -76,7 +76,7 @@ type S = Fx.fx2[Memoized, TimedFuture]
 implicit val scheduler = ExecutorServices.schedulerFromGlobalExecutionContext
 
 val futureMemo: Future[Int] =
-  (expensive[S] >> expensive[S]).runFutureMemo(ConcurrentHashMapCache()).runSequential
+  (expensive[S]() >> expensive[S]()).runFutureMemo(ConcurrentHashMapCache()).runSequential
 
 Await.result(futureMemo, 1.second)
 

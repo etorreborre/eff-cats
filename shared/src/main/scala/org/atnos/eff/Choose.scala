@@ -155,7 +155,7 @@ object Rand {
 
     def combineK[A](x: Rand[A], y: Rand[A]): Rand[A] =
       Rand { r =>
-        if (r.nextBoolean) {
+        if (r.nextBoolean()) {
           x.run(r) match {
             case Some(a) => Some(a)
             case None    => y.run(r)

@@ -16,7 +16,7 @@ final case class TwitterTimedFuture[A](callback: (FuturePool, Scheduler) => Futu
   @inline
   def runNow(pool: FuturePool, scheduler: Scheduler): Future[A] =
     timeout.fold(callback(pool, scheduler)) { t =>
-      val promise = Promise[A]
+      val promise = Promise[A]()
       val cancelTimeout = scheduler.schedule({ promise.updateIfEmpty(Throw(new TimeoutException)); () }, t)
       callback(pool, scheduler)
           .onFailure { e => cancelTimeout(); val _ = promise.updateIfEmpty(Throw(e)) }

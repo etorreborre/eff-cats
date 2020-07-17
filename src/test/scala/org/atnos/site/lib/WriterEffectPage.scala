@@ -32,7 +32,7 @@ def fileFold(path: String) = new RightFold[String, Unit] {
 }
 
 action.runWriterFold(fileFold("target/log")).run
-io.Source.fromFile("target/log").getLines.toList
+io.Source.fromFile("target/log").getLines().toList
 }.eval}
 
 

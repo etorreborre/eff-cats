@@ -51,7 +51,7 @@ class TwitterFutureEffectSpec(implicit ee: ExecutionEnv) extends Specification w
       b <- futureDelay(20)
     } yield a + b
 
-    Await.result(action[S].runOption.runSequential) must beSome(30)
+    Await.result(action[S]().runOption.runSequential) must beSome(30)
   }
 
   def e2 = {
@@ -60,7 +60,7 @@ class TwitterFutureEffectSpec(implicit ee: ExecutionEnv) extends Specification w
       b <- futureDelay { boom; 20 }
     } yield a + b
 
-    Await.result(action[S].twitterFutureAttempt.runOption.runSequential) must beSome(beLeft(boomException))
+    Await.result(action[S]().twitterFutureAttempt.runOption.runSequential) must beSome(beLeft(boomException))
   }
 
   def e3 = {
@@ -76,7 +76,7 @@ class TwitterFutureEffectSpec(implicit ee: ExecutionEnv) extends Specification w
 
     val run = futureDelay[S, Unit](Thread.sleep(1000)) >> Eff.traverseA(delays)(action)
     eventually(retries = 5, sleep = 0.seconds) {
-      messages.clear
+      messages.clear()
       Await.result(run.runOption.runAsync)
 
       "the messages are ordered" ==> {

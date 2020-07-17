@@ -49,7 +49,7 @@ class TaskEffectSpec(implicit ee: ExecutionEnv) extends Specification with Scala
       b <- taskDelay(20)
     } yield a + b
 
-    action[S].runOption.runSequential.runToFuture must beSome(30).await(retries = 5, timeout = 5.seconds)
+    action[S]().runOption.runSequential.runToFuture must beSome(30).await(retries = 5, timeout = 5.seconds)
   }
 
   def e2 = {
@@ -58,7 +58,7 @@ class TaskEffectSpec(implicit ee: ExecutionEnv) extends Specification with Scala
       b <- taskDelay { boom; 20 }
     } yield a + b
 
-    action[S].taskAttempt.runOption.runSequential.runToFuture must beSome(beLeft(boomException)).await(retries = 5, timeout = 5.seconds)
+    action[S]().taskAttempt.runOption.runSequential.runToFuture must beSome(beLeft(boomException)).await(retries = 5, timeout = 5.seconds)
   }
 
   def e3 = {
@@ -74,7 +74,7 @@ class TaskEffectSpec(implicit ee: ExecutionEnv) extends Specification with Scala
     val run = taskDelay[S, Unit](Thread.sleep(1000)) >> Eff.traverseA(delays)(action)
 
     eventually(retries = 5, sleep = 0.seconds) {
-      messages.clear
+      messages.clear()
       Await.result(run.runOption.runAsync.runToFuture, 3.seconds)
 
       "the messages are ordered" ==> {
@@ -159,7 +159,7 @@ class TaskEffectSpec(implicit ee: ExecutionEnv) extends Specification with Scala
       b <- taskDelay(20)
     } yield a + b
 
-    action[S].runOption.runAsync.runToFuture must beSome(30).await(retries = 5, timeout = 5.seconds)
+    action[S]().runOption.runAsync.runToFuture must beSome(30).await(retries = 5, timeout = 5.seconds)
   }
 
   def e13 = {

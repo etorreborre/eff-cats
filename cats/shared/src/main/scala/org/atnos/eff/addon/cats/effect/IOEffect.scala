@@ -52,13 +52,13 @@ trait IOInterpretation extends IOTypes {
     Eff.detach(e).unsafeRunAsync(cb)
 
   def unsafeRunSync[A](e: Eff[Fx1[IO], A]): A =
-    Eff.detach(e).unsafeRunSync
+    Eff.detach(e).unsafeRunSync()
 
   def unsafeRunTimed[A](e: Eff[Fx1[IO], A], limit: Duration): Option[A] =
     Eff.detach(e).unsafeRunTimed(limit)
 
   def unsafeToFuture[A](e: Eff[Fx1[IO], A]): Future[A] =
-    Eff.detach(e).unsafeToFuture
+    Eff.detach(e).unsafeToFuture()
 
   def to[F[_], A](e: Eff[Fx1[IO], A])(implicit f: Async[F]): F[A] =
     Eff.detach[IO, Fx1[IO], A, Throwable](e).to[F]
